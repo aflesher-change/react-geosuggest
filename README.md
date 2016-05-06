@@ -173,6 +173,13 @@ Automatically activate the first suggestion as you type. If false, the exact ter
 
 All standard `input[type="text"]` attributes are allowed. See the [documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input) for more information.
 
+#### debounceWait
+Type: `Number`
+Default: `null`
+
+Wait for a delay of X milliseconds in between keystrokes before showing autocomplete results. This is used
+to reduce the number of requests made to the autocomplete service.
+
 ### Exposed component functions
 
 #### focus()

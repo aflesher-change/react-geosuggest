@@ -30,7 +30,8 @@ class Geosuggest extends React.Component {
       userInput: this.props.initialValue,
       activeSuggest: null,
       suggests: [],
-      timer: null
+      timer: null,
+      debounceTimer: null
     };
   }
 
@@ -81,8 +82,17 @@ class Geosuggest extends React.Component {
    */
   onInputChange(userInput) {
     this.setState({userInput}, () => {
-      this.showSuggests();
-      this.props.onChange(userInput);
+      if (this.props.debounceWait) {
+        clearTimeout(this.state.debounceTimer);
+        const debounceTimer = setTimeout(() => {
+          this.showSuggests();
+          this.props.onChange(userInput);
+        }, this.props.debounceWait);
+        this.setState({debounceTimer});
+      } else {
+        this.showSuggests();
+        this.props.onChange(userInput);
+      }
     });
   }
 
