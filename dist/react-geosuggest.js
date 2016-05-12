@@ -122,7 +122,8 @@ var Geosuggest = function (_React$Component) {
       userInput: _this.props.initialValue,
       activeSuggest: null,
       suggests: [],
-      timer: null
+      timer: null,
+      debounceTimer: null
     };
     return _this;
   }
@@ -187,8 +188,17 @@ var Geosuggest = function (_React$Component) {
       var _this2 = this;
 
       this.setState({ userInput: userInput }, function () {
-        _this2.showSuggests();
-        _this2.props.onChange(userInput);
+        if (_this2.props.debounceWait) {
+          clearTimeout(_this2.state.debounceTimer);
+          var debounceTimer = setTimeout(function () {
+            _this2.showSuggests();
+            _this2.props.onChange(userInput);
+          }, _this2.props.debounceWait);
+          _this2.setState({ debounceTimer: debounceTimer });
+        } else {
+          _this2.showSuggests();
+          _this2.props.onChange(userInput);
+        }
       });
     }
 
@@ -777,7 +787,8 @@ exports.default = {
   onChange: _react2.default.PropTypes.func,
   skipSuggest: _react2.default.PropTypes.func,
   getSuggestLabel: _react2.default.PropTypes.func,
-  autoActivateFirstSuggest: _react2.default.PropTypes.bool
+  autoActivateFirstSuggest: _react2.default.PropTypes.bool,
+  debounceWait: _react2.default.PropTypes.number
 };
 
 },{}],7:[function(require,module,exports){
